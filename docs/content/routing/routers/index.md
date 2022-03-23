@@ -663,6 +663,8 @@ The [supported `provider` table](../../https/acme.md#providers) indicates if the
 If both HTTP routers and TCP routers listen to the same entry points, the TCP routers will apply *before* the HTTP routers.
 If no matching route is found for the TCP routers, then the HTTP routers will take over.
 
+When more than one router is attach on an entrypoint, for routing purpose, Traefik needs to wait for the first bytes before connecting to your service. Some service, need to wait for the connection validation, before receiving any data (like SMTP). In Traefik, to handle those exception which doesn't support "routing", we connect directly to a backend without waiting for data if you use only one router with `HostSNI("*")` on an entrypoint (e.g. attach all routers to their specific entrypoint).
+
 ### EntryPoints
 
 If not specified, TCP routers will accept requests from all defined entry points.
